@@ -1,13 +1,22 @@
 package com.harilee.libraryuser.Activity;
 
+import android.app.ProgressDialog;
+import android.content.Context;
+import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -18,12 +27,22 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.harilee.libraryuser.Adapter.BookAdapter;
 import com.harilee.libraryuser.Models.BookModel;
+import com.harilee.libraryuser.Models.IssueModel;
 import com.harilee.libraryuser.R;
 import com.harilee.libraryuser.Utils.Utility;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.Period;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -35,6 +54,8 @@ public class UserDashboard extends AppCompatActivity {
     RecyclerView bookList;
     @BindView(R.id.books_due)
     FloatingActionButton booksDue;
+    @BindView(R.id.log_out)
+    Button logOut;
     private ArrayList<BookModel> bookModels = new ArrayList<>();
     private BookAdapter adapter;
     private String TAG = "Book";
@@ -68,33 +89,24 @@ public class UserDashboard extends AppCompatActivity {
         nameTv.setText("Name: " + name);
         authorTv.setText("Author: " + author);
         descriptionTv.setText("Description: " + description);
-        date.setText("Date: " + format);
+        date.setText("Due Date: " + format);
 
         //checking if the book is available or not
+        Log.e(TAG, "issueBook: " + available);
         if (!available.equalsIgnoreCase("1")) {
             Toast.makeText(getApplicationContext(), "Book is not available", Toast.LENGTH_SHORT).show();
             issueBook.setEnabled(false);
         }
 
         issueBook.setOnClickListener(v -> {
-
-            final Integer[] bookCount = {0};
-            db.collection("issue")
-                    .get()
-                    .addOnCompleteListener(task -> {
-                        if (task.isSuccessful()) {
-                            bookCount[0] = task.getResult().size();
-                        } else {
-                            Toast.makeText(getApplicationContext(), "Error getting data", Toast.LENGTH_SHORT).show();
-                        }
-                    });
+            ProgressDialog dialog = ProgressDialog.show(UserDashboard.this, "",
+                    "Issuing. Please wait...", true);
             Map<String, Object> book = new HashMap<>();
             book.put("bookid", id);
             book.put("date", format);
             book.put("student", Utility.getUtilityInstance().getPreference(getApplicationContext(), "ROLL_NUM"));
-            Integer count = bookCount[0];
 
-            db.collection("issue").document("book" + count)
+            db.collection("issue").document(id)
                     .set(book)
                     .addOnSuccessListener(documentReference -> {
 
@@ -103,14 +115,25 @@ public class UserDashboard extends AppCompatActivity {
 
                         issuedBookRef
                                 .update("available", "0")
-                                .addOnSuccessListener(aVoid -> Log.d(TAG, "DocumentSnapshot successfully updated!"))
-                                .addOnFailureListener(e -> Log.w(TAG, "Error updating document", e));
+                                .addOnSuccessListener(aVoid -> {
+                                    dialog.cancel();
+                                    getBooks();
+                                    Log.d(TAG, "DocumentSnapshot successfully updated!");
+
+                                })
+                                .addOnFailureListener(e -> {
+                                    dialog.cancel();
+                                    Log.w(TAG, "Error updating document", e);
+
+                                });
 
                         Toast.makeText(getApplicationContext(), "Book issued successfully", Toast.LENGTH_SHORT).show();
                         mBottomSheetDialog.cancel();
 
                     })
                     .addOnFailureListener(e -> {
+
+                        dialog.cancel();
                         Toast.makeText(getApplicationContext(), "Error issuing book", Toast.LENGTH_SHORT).show();
                         mBottomSheetDialog.cancel();
 
@@ -123,10 +146,14 @@ public class UserDashboard extends AppCompatActivity {
     private void getBooks() {
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();
+        ProgressDialog dialog = ProgressDialog.show(UserDashboard.this, "",
+                "Loading. Please wait...", true);
         db.collection("inventory")
                 .get()
                 .addOnCompleteListener(task -> {
+                    dialog.cancel();
                     if (task.isSuccessful()) {
+                        bookModels.clear();
                         Log.e(TAG, "openAddbookDialog: " + task.getResult().size());
                         for (QueryDocumentSnapshot document : task.getResult()) {
                             Log.e(TAG, document.getId() + " => " + document.getData().get("author"));
@@ -148,28 +175,116 @@ public class UserDashboard extends AppCompatActivity {
                 });
     }
 
-    @OnClick(R.id.books_due)
-    public void onViewClicked() {
 
-        getDue();
-
-    }
-
+    @RequiresApi(api = Build.VERSION_CODES.O)
     private void getDue() {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
+        ProgressDialog dialog = ProgressDialog.show(UserDashboard.this, "",
+                "Getting due books. Please wait...", true);
         db.collection("issue")
                 .whereEqualTo("student"
                         , Utility.getUtilityInstance().getPreference(getApplicationContext(), "ROLL_NUM"))
                 .get()
                 .addOnCompleteListener(task -> {
+                    dialog.cancel();
                     if (task.isSuccessful()) {
-                        for (QueryDocumentSnapshot document : task.getResult()) {
-                            Log.d(TAG, document.getId() + " => " + document.getData());
+
+                        if (task.getResult().size()>0) {
+                            RoundedBottomSheetDialog mBottomSheetDialog = new RoundedBottomSheetDialog(this);
+                            View sheetView = getLayoutInflater().inflate(R.layout.fine_list, null);
+                            mBottomSheetDialog.setContentView(sheetView);
+                            mBottomSheetDialog.show();
+
+                            RecyclerView dueList = sheetView.findViewById(R.id.fine_list);
+                            ArrayList<IssueModel> issueModels = new ArrayList<>();
+                            FineAdapter adapter = new FineAdapter(this, getApplicationContext(), issueModels);
+                            dueList.setAdapter(adapter);
+
+                            IssueModel issueModel;
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                Log.d(TAG, document.getId() + " => " + document.getData());
+                                issueModel = new IssueModel();
+                                issueModel.setBookId((document.getId()));
+                                issueModel.setStudentNumber(String.valueOf(document.getData().get("student")));
+                                issueModel.setDayLeft(String.valueOf(document.getData().get("date")));
+                                issueModels.add(issueModel);
+
+                            }
+                            adapter.notifyDataSetChanged();
+                        }else{
+                            Toast.makeText(getApplicationContext(), "No books issued in your name", Toast.LENGTH_SHORT).show();
                         }
                     } else {
                         Log.d(TAG, "Error getting documents: ", task.getException());
                     }
                 });
 
+    }
+
+    @OnClick({R.id.log_out, R.id.books_due})
+    public void onViewClicked(View view) {
+        switch (view.getId()) {
+            case R.id.log_out:
+                Utility.getUtilityInstance().setPreference(getApplicationContext(), "IS_LOGIN", "no");
+                startActivity(new Intent(UserDashboard.this, LoginActivity.class));
+                break;
+            case R.id.books_due:
+                getDue();
+                break;
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finishAffinity();
+    }
+
+    public class FineAdapter extends RecyclerView.Adapter<FineAdapter.ViewHolder> {
+
+
+        private Context context;
+        private ArrayList<IssueModel> issueModels;
+
+        public FineAdapter(UserDashboard userDashboard, Context applicationContext, ArrayList<IssueModel> issueModels) {
+
+            this.context = applicationContext;
+            this.issueModels = issueModels;
+
+        }
+
+        @NonNull
+        @Override
+        public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+            View view = LayoutInflater.from(context).inflate(R.layout.fine_adapter, parent, false);
+            return new ViewHolder(view);
+        }
+
+        @Override
+        public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+
+            holder.bookIdTv.setText("Book ID: " + issueModels.get(position).getBookId());
+            holder.daysLeftTv.setText("Due in: " + issueModels.get(position).getDayLeft());
+            holder.studentNumberTv.setText("Student: " + issueModels.get(position).getStudentNumber());
+        }
+
+        @Override
+        public int getItemCount() {
+            return issueModels.size();
+        }
+
+        public class ViewHolder extends RecyclerView.ViewHolder {
+            @BindView(R.id.student_number_tv)
+            TextView studentNumberTv;
+            @BindView(R.id.book_id_tv)
+            TextView bookIdTv;
+            @BindView(R.id.days_left_tv)
+            TextView daysLeftTv;
+
+            public ViewHolder(@NonNull View itemView) {
+                super(itemView);
+                ButterKnife.bind(this, itemView);
+            }
+        }
     }
 }

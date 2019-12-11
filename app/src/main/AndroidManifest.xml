@@ -22,6 +22,8 @@
         <activity android:name=".Activity.HomeDashboard"/>
         <activity android:name=".Activity.AdminDashboard"/>
         <activity android:name=".Activity.UserDashboard"/>
+        <activity android:name=".Activity.BookList"/>
+        <activity android:name=".Activity.StudentList"/>
     </application>
 
 </manifest>

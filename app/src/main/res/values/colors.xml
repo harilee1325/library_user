@@ -23,4 +23,6 @@
     <color name="theme_brown">#EE9856</color>
     <color name="light_gray">#e0e0e0</color>
     <color name="background">#fbfbfb</color>
+    <color name="roundedBottomSheetPrimaryNavigationBarColor">#000000</color>
+
 </resources>

@@ -6,11 +6,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Once you withdraw the book you are responsible
-for the book any damage done to the book will reflect as a fine. You can keep the
-book for 15 days after that you have to re issue the book with the admin.
-
-PLEASE CARRY YOUR ID CARD WHEN YOU COME TO COLLECT YOUR BOOK"
+        android:text="PLEASE CARRY YOUR ID CARD WHEN YOU COME TO COLLECT YOUR BOOK"
         android:textSize="18sp"
         android:layout_margin="10dp"
         android:gravity="center"

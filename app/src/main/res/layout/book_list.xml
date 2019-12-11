@@ -7,8 +7,7 @@
     android:layout_margin="10dp"
     android:id="@+id/book_card"
     app:cardCornerRadius="10dp"
-    app:cardElevation="15dp"
-    >
+    app:cardElevation="15dp">
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
@@ -39,8 +38,17 @@
             android:gravity="center"
             android:text="title text"
             android:textColor="@color/theme_red"
-            android:textSize="20sp" />
+            android:textSize="16sp" />
 
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="avaiable"
+            android:textColor="@color/green"
+            android:gravity="center"
+            android:textSize="20sp"
+            android:id="@+id/available_tv" />
 
 
     </LinearLayout>

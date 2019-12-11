@@ -1,7 +1,18 @@
 package com.harilee.libraryuser.Utils;
 
+import android.app.Activity;
+import android.app.Application;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.graphics.drawable.ColorDrawable;
+
+import androidx.appcompat.app.AppCompatActivity;
+
+import com.harilee.libraryuser.R;
+import com.wang.avi.AVLoadingIndicatorView;
+
+import java.util.Objects;
 
 public class Utility {
 
@@ -34,23 +45,5 @@ public class Utility {
     }
 
 
-    /*public static void showGifPopup(final Context mContext, boolean show, Dialog dialog) {
 
-        dialog.setContentView(R.layout.progress_bar);
-        dialog.setCancelable(false);
-        AVLoadingIndicatorView imageView = dialog.findViewById(R.id.avi);
-        Objects.requireNonNull(dialog.getWindow()).setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
-        if (!((Activity) mContext).isFinishing()) {
-            try {
-                if (show) {
-                    dialog.show();
-                } else {
-                    dialog.dismiss();
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-
-    }*/
 }

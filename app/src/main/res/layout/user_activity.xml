@@ -5,14 +5,29 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="10dp"
+        android:background="@color/colorAccent"
+        android:layout_marginTop="10dp"
+        android:textColor="@color/theme_white"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentTop="true"
+        android:scaleType="centerCrop"
+        android:text="Log Out"
+        android:id="@+id/log_out"
+
+        />
+
     <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/book_list"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/log_out"
+        android:layout_marginTop="0dp"
         app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-        app:spanCount="2"
-        android:layout_alignParentTop="true"
-        android:layout_marginTop="10dp"
-        android:id="@+id/book_list"/>
+        app:spanCount="2" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:layout_width="wrap_content"

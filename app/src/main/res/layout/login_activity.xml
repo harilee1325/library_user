@@ -3,19 +3,75 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <ImageView
+    <TextView
         android:layout_width="match_parent"
-        android:layout_height="400dp"
-        android:src="@drawable/library"
-        android:scaleType="centerCrop"/>
+        android:layout_height="wrap_content"
+        android:text="Basic library rules"
+        android:textAllCaps="true"
+        android:layout_gravity="center"
+        android:textSize="25sp"
+        android:textColor="@color/redLignt"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="10dp"
+        />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Follow the rules!"
+        android:layout_gravity="center"
+        android:textSize="17sp"
+        android:textColor="@color/theme_black"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="10dp"
+        />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="> Carry your student ID card (or CHOIS Card) with you when you enter the library."
+        android:layout_gravity="center"
+        android:textColor="@color/theme_black"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="10dp"
+        />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="> Do not take any book or other library material out of the library without following the borrowing procedures."
+        android:layout_gravity="center"
+        android:textColor="@color/theme_black"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="10dp"
+        />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="> Make sure to return the borrowed items by the due date."
+        android:layout_gravity="center"
+        android:textColor="@color/theme_black"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="10dp"
+        />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="> Return books/materials to their original location on the bookshelf."
+        android:layout_gravity="center"
+        android:textColor="@color/theme_black"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="10dp"
+        />
+
 
     <EditText
         android:id="@+id/roll_number_et"
-        android:layout_width="wrap_content"
+        android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:hint="Enter Roll Number"
+        android:inputType="textPassword"
         android:layout_marginLeft="20dp"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="20dp"
         android:textSize="20sp"
         android:textColor="@color/colorPrimary"
         />
