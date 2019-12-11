@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "952985622569",
+    "firebase_url": "https://libuser.firebaseio.com",
+    "project_id": "libuser",
+    "storage_bucket": "libuser.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:952985622569:android:9784e304ea5e70f09c2438",
+        "android_client_info": {
+          "package_name": "com.harilee.libraryuser"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "952985622569-3clinrsrp26jv8jp4vvjgj8bdcq6pnia.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCwjUDriXA6zTfkqBgrUBPL8QdOOvMK4HE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "952985622569-3clinrsrp26jv8jp4vvjgj8bdcq6pnia.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

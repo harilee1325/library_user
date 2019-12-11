@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:orientation="vertical">
+
+    <Button
+        android:id="@+id/add_user"
+        android:layout_width="match_parent"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="15dp"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimary"
+        android:text="Add User"
+        android:textColor="@color/theme_white" />
+
+    <Button
+        android:id="@+id/see_fine"
+        android:layout_marginTop="15dp"
+        android:layout_width="match_parent"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimary"
+        android:text="Fine "
+        android:textColor="@color/theme_white" />
+
+    <Button
+        android:id="@+id/manage_books"
+        android:layout_width="match_parent"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginRight="20dp"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimary"
+        android:text="Inventory"
+        android:textColor="@color/theme_white" />
+
+    <Button
+        android:id="@+id/view_inventory"
+        android:layout_width="match_parent"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginRight="20dp"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimary"
+        android:text="View Inventory"
+        android:textColor="@color/theme_white" />
+
+    <Button
+        android:id="@+id/student_list"
+        android:layout_width="match_parent"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginRight="20dp"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimary"
+        android:text="students"
+        android:textColor="@color/theme_white" />
+
+</LinearLayout>
