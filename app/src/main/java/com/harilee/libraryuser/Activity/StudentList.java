@@ -19,6 +19,7 @@ import com.deishelon.roundedbottomsheet.RoundedBottomSheetDialog;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.harilee.libraryuser.Models.IssueModel;
+import com.harilee.libraryuser.Models.StudentModel;
 import com.harilee.libraryuser.R;
 import com.harilee.libraryuser.Utils.Utility;
 
@@ -32,7 +33,7 @@ public class StudentList extends AppCompatActivity {
     @BindView(R.id.fine_list)
     RecyclerView fineList;
     private StudentAdapter adapter;
-    private ArrayList<IssueModel> studentData = new ArrayList<>();
+    private ArrayList<StudentModel> studentData = new ArrayList<>();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -45,20 +46,20 @@ public class StudentList extends AppCompatActivity {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         ProgressDialog dialog = ProgressDialog.show(StudentList.this, "",
                 "Getting students data. Please wait...", true);
-        db.collection("issue")
+        db.collection("students")
                 .get()
                 .addOnCompleteListener(task -> {
                     dialog.cancel();
                     if (task.isSuccessful()) {
 
                         if (task.getResult().size()>0) {
-                            IssueModel issueModel;
+                            StudentModel studentModel;
                             for (QueryDocumentSnapshot document : task.getResult()) {
-                                issueModel = new IssueModel();
-                                issueModel.setBookId((document.getId()));
-                                issueModel.setStudentNumber(String.valueOf(document.getData().get("student")));
-                                issueModel.setDayLeft(String.valueOf(document.getData().get("date")));
-                                studentData.add(issueModel);
+                                studentModel = new StudentModel();
+                                studentModel.setDepartment(String.valueOf((document.getData().get("department"))));
+                                studentModel.setName(String.valueOf(document.getData().get("name")));
+                                studentModel.setRollNumber(String.valueOf(document.getData().get("roll_number")));
+                                studentData.add(studentModel);
 
                             }
                             adapter.notifyDataSetChanged();
@@ -77,9 +78,9 @@ public class StudentList extends AppCompatActivity {
 
 
         private Context context;
-        private ArrayList<IssueModel> studentData;
+        private ArrayList<StudentModel> studentData;
 
-        public StudentAdapter(StudentList studentList, Context applicationContext, ArrayList<IssueModel> studentData) {
+        public StudentAdapter(StudentList studentList, Context applicationContext, ArrayList<StudentModel> studentData) {
             this.context = applicationContext;
             this.studentData = studentData;
 
@@ -94,9 +95,9 @@ public class StudentList extends AppCompatActivity {
 
         @Override
         public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-            holder.bookIdTv.setText("Book ID: " + studentData.get(position).getBookId());
-            holder.daysLeftTv.setText("Due in: " + studentData.get(position).getDayLeft());
-            holder.studentNumberTv.setText("Student ID: " + studentData.get(position).getStudentNumber());
+            holder.bookIdTv.setText("Student Name: " + studentData.get(position).getName());
+            holder.daysLeftTv.setText("Department: " + studentData.get(position).getDepartment());
+            holder.studentNumberTv.setText("Roll Number: " + studentData.get(position).getRollNumber());
         }
 
         @Override

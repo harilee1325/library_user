@@ -3,6 +3,7 @@ package com.harilee.libraryuser.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -10,7 +11,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -31,18 +31,9 @@ import com.harilee.libraryuser.Models.IssueModel;
 import com.harilee.libraryuser.R;
 import com.harilee.libraryuser.Utils.Utility;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.Period;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -59,14 +50,18 @@ public class UserDashboard extends AppCompatActivity {
     private ArrayList<BookModel> bookModels = new ArrayList<>();
     private BookAdapter adapter;
     private String TAG = "Book";
-
+    private ArrayList<Drawable> bookImages = new ArrayList<android.graphics.drawable.Drawable>();
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.user_activity);
         ButterKnife.bind(this);
-
-        adapter = new BookAdapter(this, bookModels, getApplicationContext());
+        bookImages.add(this.getDrawable(R.drawable.book));
+        bookImages.add(this.getDrawable(R.drawable.book2));
+        bookImages.add(this.getDrawable(R.drawable.book3));
+        bookImages.add(this.getDrawable(R.drawable.book4));
+        bookImages.add(this.getDrawable(R.drawable.book5));
+        adapter = new BookAdapter(this, bookModels, getApplicationContext(), bookImages);
         bookList.setAdapter(adapter);
 
         getBooks();

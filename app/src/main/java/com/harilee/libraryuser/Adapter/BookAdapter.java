@@ -1,10 +1,12 @@
 package com.harilee.libraryuser.Adapter;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -23,6 +25,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
@@ -36,17 +39,20 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.ViewHolder> {
     private ArrayList<BookModel> bookModels;
     private UserDashboard userDashboard;
     private Boolean isClickable;
+    private ArrayList<Drawable> bookImages;
 
-    public BookAdapter(UserDashboard userDashboard, ArrayList<BookModel> bookModels, Context applicationContext) {
+    public BookAdapter(UserDashboard userDashboard, ArrayList<BookModel> bookModels, Context applicationContext, ArrayList<Drawable> bookImages) {
         this.context = applicationContext;
         this.bookModels = bookModels;
         this.userDashboard = userDashboard;
+        this.bookImages = bookImages;
         isClickable = true;
     }
 
-    public BookAdapter(ArrayList<BookModel> bookModels, Context applicationContext) {
+    public BookAdapter(ArrayList<BookModel> bookModels, Context applicationContext, ArrayList<Drawable> bookImages) {
         this.context = applicationContext;
         this.bookModels = bookModels;
+        this.bookImages = bookImages;
         isClickable = false;
     }
 
@@ -69,6 +75,13 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.ViewHolder> {
 
         }
         holder.titleBookTv.setText(bookModels.get(position).getName());
+        if (position<5) {
+            holder.bookImage.setImageDrawable(bookImages.get(position));
+        }else {
+            Random random = new Random();
+            int pos = random.nextInt(5);
+            holder.bookImage.setImageDrawable(bookImages.get(pos));
+        }
         if (bookModels.get(position).getAvailable().equalsIgnoreCase("1")){
             holder.availableTv.setText("Available");
             holder.availableTv.setTextColor(context.getResources().getColor(R.color.green));
@@ -107,6 +120,8 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.ViewHolder> {
         TextView subtitleTv;
         @BindView(R.id.book_card)
         CardView bookCard;
+        @BindView(R.id.book_image)
+        ImageView bookImage;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);

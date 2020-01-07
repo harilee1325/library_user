@@ -1,6 +1,7 @@
 package com.harilee.libraryuser.Activity;
 
 import android.app.Dialog;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
@@ -28,6 +29,7 @@ public class BookList extends AppCompatActivity {
     private BookAdapter bookAdapter ;
     private ArrayList<BookModel> bookModels = new ArrayList<>();
     private String TAG = "Admin Book";
+    private ArrayList<Drawable> bookImages = new ArrayList<android.graphics.drawable.Drawable>();
 
 
     @Override
@@ -35,8 +37,12 @@ public class BookList extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.book_view_admin);
         ButterKnife.bind(this);
-
-        bookAdapter = new BookAdapter( bookModels, getApplicationContext());
+        bookImages.add(this.getDrawable(R.drawable.book));
+        bookImages.add(this.getDrawable(R.drawable.book2));
+        bookImages.add(this.getDrawable(R.drawable.book3));
+        bookImages.add(this.getDrawable(R.drawable.book4));
+        bookImages.add(this.getDrawable(R.drawable.book5));
+        bookAdapter = new BookAdapter( bookModels, getApplicationContext(), bookImages);
         bookListAdmin.setAdapter(bookAdapter);
         getBooks();
     }
